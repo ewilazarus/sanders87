@@ -1,0 +1,10 @@
+This is the implementation for the first programming assignment of the Distributed Algorithms course from PUC-Rio
+
+* Implement the algorithm Sanders87 for mutual exclusion, using districts.
+* Define that all processes don't move and are able to communicate to any other process.
+* Read from a configuration file which are the districts.
+* Test the algorithm for 25 and 64 processes (k=9 and k=15, respectively).
+* The communication channels deliver messages in FIFO order, but may suffer from delays having probability of P[delay].
+* Let P[sc] the probability of each node to request the entrance in the CS at every moment. Measure the number of times on which RELINQUISH happens, for two or three probabilities (e.g. P[sc]=0.2, P[sc]=0.5 and P[sc]=0.8).
+* Bonus: Compare the Sanders algorithm to the Ricart and Agravala
+
