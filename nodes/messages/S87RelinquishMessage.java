@@ -1,16 +1,17 @@
 package projects.sanders87.nodes.messages;
 
+import projects.sanders87.nodes.implementations.S87Node;
 import sinalgo.nodes.messages.Message;
 
 public class S87RelinquishMessage extends S87TimestampedMessage {
 
-	public S87RelinquishMessage(int timestamp) {
-		super(timestamp);
+	public S87RelinquishMessage(S87Node sender, int timestamp) {
+		super(sender, timestamp);
 	}
 
 	@Override
 	public Message clone() {
-		return new S87RelinquishMessage(this.timestamp);
+		return new S87RelinquishMessage(this.sender, this.timestamp);
 	}
 
 }
