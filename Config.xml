@@ -116,10 +116,10 @@
 		<DefaultMessageTransmissionModel value="ConstantTime" />
 
 		<!--Default connectivity model used when none is specified-->
-		<DefaultConnectivityModel value="UDG" />
+		<DefaultConnectivityModel value="projects.sanders87.models.connectivity.Sanders87Grid" />
 
 		<!--Default distribution model used when none is specified-->
-		<DefaultDistributionModel value="Random" />
+		<DefaultDistributionModel value="Grid2D" />
 
 		<!--Default interference model used when none is specified-->
 		<DefaultInterferenceModel value="NoInterference" />
@@ -131,7 +131,7 @@
 		<DefaultReliabilityModel value="ReliableDelivery" />
 
 		<!--Default node implementation used when none is specified-->
-		<DefaultNodeImplementation value="DummyNode" />
+		<DefaultNodeImplementation value="projects.sanders87.nodes.implementations.Sanders87Node" />
 
 		<!--***********************************************************************-->
 		<!--  Node storage, position transformation                                -->
