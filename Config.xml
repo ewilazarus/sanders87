@@ -185,7 +185,7 @@
 		<!--  Animation Settings                                                   -->
 		<!--***********************************************************************-->
 		<!--Draw an envelope for each message that is being sent-->
-		<showMessageAnimations value="false" />
+		<showMessageAnimations value="true" />
 
 		<!--Width of the envelope (when the message animation is enabled)-->
 		<messageAnimationEnvelopeWidth value="30.0" />
@@ -231,6 +231,6 @@
 		<CriticalSection>
 			<EnterThreshold value = "0.06" />
 		</CriticalSection>
-			</Custom>
+	</Custom>
 </Document>
 

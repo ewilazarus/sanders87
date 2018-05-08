@@ -38,9 +38,7 @@ public class S87Node extends S87AbstractNode {
 				state.hasInquired = true;
 			}
 		} else {
-			send(new S87YesMessage(this), message.sender);
-			state.hasVoted = true;
-			state.updateCandidate(message.sender, message.timestamp);			
+			vote(message.sender, message.timestamp);			
 		}
 	}
 	
@@ -68,17 +66,23 @@ public class S87Node extends S87AbstractNode {
 		releaseVotes();
 	}
 	
-	public void vote() {
+	private void vote() {
 		if (!deferedQueue.isEmpty()) {
 			S87TimestampedMessage message = deferedQueue.poll();
-			send(new S87YesMessage(this), message.sender);
-			state.updateCandidate(message.sender, message.timestamp);
+			vote(message.sender, message.timestamp);
 		} else {
 			state.hasVoted = false;
+			state.hasInquired = false;
 		}
-		state.hasInquired = false;
 	}
 	
+	private void vote(S87Node node, int timestamp) {
+		send(new S87YesMessage(this), node);
+		state.hasVoted = true;
+		state.hasInquired = false;
+		state.updateCandidate(node, timestamp);
+	}
+		
 	private void requestVotes() {
 		broadcast(new S87RequestMessage(this, state.getUpdatedTimestamp()));
 	}

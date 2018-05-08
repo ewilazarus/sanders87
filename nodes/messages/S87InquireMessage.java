@@ -1,5 +1,7 @@
 package projects.sanders87.nodes.messages;
 
+import java.awt.Color;
+
 import projects.sanders87.nodes.implementations.S87Node;
 import sinalgo.nodes.messages.Message;
 
@@ -12,6 +14,11 @@ public class S87InquireMessage extends S87TimestampedMessage {
 	@Override
 	public Message clone() {
 		return new S87InquireMessage(this.sender, this.timestamp);
+	}
+	
+	@Override
+	public Color getEnvelopeColor() {
+		return Color.RED;
 	}
 
 }
