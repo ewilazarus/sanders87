@@ -11,7 +11,6 @@ import projects.sanders87.nodes.messages.S87ReleaseMessage;
 import projects.sanders87.nodes.messages.S87RelinquishMessage;
 import projects.sanders87.nodes.messages.S87RequestMessage;
 import projects.sanders87.nodes.messages.S87TimestampedMessage;
-import projects.sanders87.nodes.messages.S87TimestampedMessageComparator;
 import projects.sanders87.nodes.messages.S87YesMessage;
 import projects.sanders87.nodes.states.S87State;
 import projects.sanders87.nodes.timers.S87Timer;
@@ -24,6 +23,7 @@ import sinalgo.nodes.messages.Inbox;
 import sinalgo.tools.statistics.Distribution;
 
 public class S87Node extends Node {
+	
 	public int clock = 0;
 	public S87State state;
 	
@@ -43,7 +43,7 @@ public class S87Node extends Node {
 	public void init() {
 		state = S87State.NOT_IN_CS;
 		handler = new S87MessageHandler(this);
-		deferedQueue = new PriorityQueue<S87TimestampedMessage>(new S87TimestampedMessageComparator());
+		deferedQueue = new PriorityQueue<S87TimestampedMessage>();
 	}
 	
 	@Override
