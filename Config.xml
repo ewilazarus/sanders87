@@ -89,7 +89,7 @@
 		<logConfiguration value="true" />
 
 		<!--If set to true, the log files are flushed every time a new log is added.-->
-		<eagerFlush value="false" />
+		<eagerFlush value="true" />
 
 		<!--***********************************************************************-->
 		<!--  GUI                                                                  -->

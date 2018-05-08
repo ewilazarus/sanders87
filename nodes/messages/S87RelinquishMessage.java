@@ -20,4 +20,10 @@ public class S87RelinquishMessage extends S87TimestampedMessage {
 	public Color getEnvelopeColor() {
 		return Color.PINK;
 	}
+	
+	@Override
+	public String toString() {
+		return "RelinquishMessage(" + super.toString() + ")";
+	}
+	
 }

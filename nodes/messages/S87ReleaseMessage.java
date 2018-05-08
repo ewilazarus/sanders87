@@ -21,4 +21,9 @@ public class S87ReleaseMessage extends S87Message {
 		return Color.MAGENTA;
 	}
 
+	@Override
+	public String toString() {
+		return "ReleaseMessage(" + super.toString() + ")";
+	}
+	
 }

@@ -20,4 +20,10 @@ public class S87YesMessage extends S87Message {
 	public Color getEnvelopeColor() {
 		return Color.DARK_GRAY;
 	}
+	
+	@Override
+	public String toString() {
+		return "YesMessage(" + super.toString() + ")";
+	}
+	
 }

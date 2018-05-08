@@ -13,12 +13,17 @@ public class S87InquireMessage extends S87TimestampedMessage {
 	
 	@Override
 	public Message clone() {
-		return new S87InquireMessage(this.sender, this.timestamp);
+		return new S87InquireMessage(sender, timestamp);
 	}
 	
 	@Override
 	public Color getEnvelopeColor() {
 		return Color.RED;
+	}
+	
+	@Override
+	public String toString() {
+		return "InquireMessage(" + super.toString() + ")";
 	}
 
 }

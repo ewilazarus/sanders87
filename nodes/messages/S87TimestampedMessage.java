@@ -18,5 +18,10 @@ public abstract class S87TimestampedMessage extends S87Message implements Compar
 			? timestampComparsion 
 			: Integer.compare(sender.ID, other.sender.ID); 
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + ", timestamp=" + timestamp; 
+	}
 				
 }

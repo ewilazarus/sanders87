@@ -21,4 +21,9 @@ public class S87RequestMessage extends S87TimestampedMessage {
 		return Color.CYAN;
 	}
 	
+	@Override
+	public String toString() {
+		return "RequestMessage(" + super.toString() + ")";
+	}
+	
 }

@@ -41,6 +41,7 @@ package projects.sanders87;
  * in the log-file. The levels below (with a higher enumeration value) not.
  */
 public class LogL extends sinalgo.tools.logging.LogL{
+	public static final boolean TRACE_ROUNDS = true;
+	public static final boolean TRACE_MESSAGES = true;
+	public static final boolean TRACE_NODES = true;
 }
-
-

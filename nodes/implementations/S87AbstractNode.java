@@ -5,7 +5,9 @@ import java.awt.Graphics;
 import java.util.PriorityQueue;
 import java.util.Random;
 
+import projects.sanders87.LogL;
 import projects.sanders87.nodes.messages.S87InquireMessage;
+import projects.sanders87.nodes.messages.S87Message;
 import projects.sanders87.nodes.messages.S87ReleaseMessage;
 import projects.sanders87.nodes.messages.S87RelinquishMessage;
 import projects.sanders87.nodes.messages.S87RequestMessage;
@@ -17,6 +19,7 @@ import sinalgo.configuration.WrongConfigurationException;
 import sinalgo.gui.transformation.PositionTransformation;
 import sinalgo.nodes.Node;
 import sinalgo.nodes.messages.Inbox;
+import sinalgo.tools.logging.Logging;
 import sinalgo.tools.statistics.Distribution;
 
 public abstract class S87AbstractNode extends Node {
@@ -66,12 +69,33 @@ public abstract class S87AbstractNode extends Node {
 				   (message.timestamp < candidateTimestamp || 
 				    message.timestamp == candidateTimestamp && message.sender.ID < candidate.ID);
 		}
+		
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append("votesReceived=" + votesReceived);
+			sb.append(", ");
+			sb.append("timestamp=" + timestamp);
+			sb.append(", ");
+			sb.append("hasVoted=" + hasVoted);
+			sb.append(", ");
+			sb.append("hasInquired=" + hasInquired);
+			sb.append(", ");
+			sb.append("candidate=" + candidate);
+			sb.append(", ");
+			sb.append("candidateTimestamp=" + candidateTimestamp);
+			sb.append(", ");
+			sb.append("condition=" + condition.name());
+			return "NodeState(" + sb + ")";
+		}
 	}
 	
+	private Logging logger = Logging.getLogger("sanders87.log");
 	private int executionTimestamp = 0;
 	protected final PriorityQueue<S87TimestampedMessage> deferedQueue = new PriorityQueue<>();
 	protected final S87NodeState state = new S87NodeState();
-	protected final String label = String.format("%03d", this.ID);
+	public final String label = String.format("%03d", this.ID);
+	
 	
 	@Override
 	public void checkRequirements() throws WrongConfigurationException {}
@@ -130,7 +154,7 @@ public abstract class S87AbstractNode extends Node {
 	
 	@Override
 	public String toString() {
-		return label;  // TODO: improve for logging
+		return "Node(label=" + label + ")";
 	}
 	
 	protected abstract void handle(S87InquireMessage message);
@@ -140,6 +164,16 @@ public abstract class S87AbstractNode extends Node {
 	protected abstract void handle(S87YesMessage message);
 	
 	protected abstract void waitForCS();
+	
+	protected void send(S87Message message, S87Node node) {
+		logger.logln(LogL.TRACE_MESSAGES, "SENDING " + message + " TO " + node);
+		super.send(message, node);
+	}
+	
+	protected void broadcast(S87Message message) {
+		logger.logln(LogL.TRACE_MESSAGES, "BROADCASTING " + message);
+		super.broadcast(message);
+	}
 		
 	private double generateRandomValue() {
 		return distribution.nextDouble();

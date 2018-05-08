@@ -15,4 +15,10 @@ public abstract class S87Message extends Message {
 	
 	@Override
 	public abstract Color getEnvelopeColor();
+	
+	@Override
+	public String toString() {
+		return "sender=" + sender;
+	}
+
 }
