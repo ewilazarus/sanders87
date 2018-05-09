@@ -9,6 +9,7 @@ public class S87ReleaseMessage extends S87Message {
 	
 	public S87ReleaseMessage(S87Node sender) {
 		super(sender);
+		type = "Release";
 	}
 
 	@Override

@@ -9,6 +9,7 @@ public class S87RequestMessage extends S87TimestampedMessage {
 
 	public S87RequestMessage(S87Node sender, int timestamp) {
 		super(sender, timestamp);
+		type = "Request";
 	}
 
 	@Override

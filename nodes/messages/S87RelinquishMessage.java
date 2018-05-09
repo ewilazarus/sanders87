@@ -9,6 +9,7 @@ public class S87RelinquishMessage extends S87TimestampedMessage {
 
 	public S87RelinquishMessage(S87Node sender, int timestamp) {
 		super(sender, timestamp);
+		type = "Relinquish";
 	}
 
 	@Override

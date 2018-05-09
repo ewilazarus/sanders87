@@ -9,6 +9,7 @@ public class S87YesMessage extends S87Message {
 
 	public S87YesMessage(S87Node sender) {
 		super(sender);
+		type = "Yes";
 	}
 
 	@Override

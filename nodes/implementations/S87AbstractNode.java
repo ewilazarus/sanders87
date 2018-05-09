@@ -6,6 +6,7 @@ import java.util.PriorityQueue;
 import java.util.Random;
 
 import projects.sanders87.LogL;
+import projects.sanders87.metrics.S87MetricCollector;
 import projects.sanders87.nodes.messages.S87InquireMessage;
 import projects.sanders87.nodes.messages.S87Message;
 import projects.sanders87.nodes.messages.S87ReleaseMessage;
@@ -48,7 +49,7 @@ public abstract class S87AbstractNode extends Node {
 		public boolean hasInquired = false;
 		public S87Node candidate;
 		public int candidateTimestamp;
-		public S87NodeCondition condition = S87NodeCondition.NOT_IN_CS;
+		private S87NodeCondition condition;
 		
 		public boolean hasAllVotes() {
 			return votesReceived == outgoingConnections.size();
@@ -69,7 +70,7 @@ public abstract class S87AbstractNode extends Node {
 				   (message.timestamp < candidateTimestamp || 
 				    message.timestamp == candidateTimestamp && message.sender.ID < candidate.ID);
 		}
-		
+				
 		@Override
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -93,7 +94,7 @@ public abstract class S87AbstractNode extends Node {
 	private Logging logger = Logging.getLogger("sanders87.log");
 	private int executionTimestamp = 0;
 	protected final PriorityQueue<S87TimestampedMessage> deferedQueue = new PriorityQueue<>();
-	protected final S87NodeState state = new S87NodeState();
+	public final S87NodeState state = new S87NodeState();
 	public final String label = String.format("%03d", this.ID);
 	
 	
@@ -101,7 +102,9 @@ public abstract class S87AbstractNode extends Node {
 	public void checkRequirements() throws WrongConfigurationException {}
 		
 	@Override
-	public void init() {}
+	public void init() {
+		setCondition(S87NodeCondition.NOT_IN_CS);
+	}
 		
 	@Override
 	public void preStep() {
@@ -113,17 +116,13 @@ public abstract class S87AbstractNode extends Node {
 	@Override
 	public void handleMessages(Inbox inbox) {
 		while(inbox.hasNext()) {
-			Object message = inbox.next();
-			if (message instanceof S87InquireMessage) {
-				handle((S87InquireMessage) message);
-			} else if (message instanceof S87ReleaseMessage) {
-				handle((S87ReleaseMessage) message);
-			} else if (message instanceof S87RelinquishMessage) {
-				handle((S87RelinquishMessage) message);
-			} else if (message instanceof S87RequestMessage) {
-				handle((S87RequestMessage) message);
-			} else if (message instanceof S87YesMessage) {
-				handle((S87YesMessage) message);
+			S87Message message = (S87Message) inbox.next();
+			switch (message.type) {
+			case "Inquire": handle((S87InquireMessage) message); break;
+			case "Release": handle((S87ReleaseMessage) message); break;
+			case "Relinquish": handle((S87RelinquishMessage) message); break;
+			case "Request": handle((S87RequestMessage) message); break;
+			case "Yes": handle((S87YesMessage) message); break;
 			}
 		}
 	}
@@ -167,12 +166,25 @@ public abstract class S87AbstractNode extends Node {
 	
 	protected void send(S87Message message, S87Node node) {
 		logger.logln(LogL.TRACE_MESSAGES, "SENDING " + message + " TO " + node);
+		S87MetricCollector.countMessage(message);
+		
 		super.send(message, node);
 	}
 	
 	protected void broadcast(S87Message message) {
 		logger.logln(LogL.TRACE_MESSAGES, "BROADCASTING " + message);
+		S87MetricCollector.countMessages(message, outgoingConnections.size());
+		
 		super.broadcast(message);
+	}
+	
+	public S87NodeCondition getCondition() {
+		return state.condition;
+	}
+	
+	protected void setCondition(S87NodeCondition condition) {
+		state.condition = condition;
+		S87MetricCollector.countCondition(this);
 	}
 		
 	private double generateRandomValue() {

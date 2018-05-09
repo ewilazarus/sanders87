@@ -12,7 +12,7 @@ public class S87Node extends S87AbstractNode {
 
 	@Override
 	protected void handle(S87InquireMessage message) {
-		if (state.condition == S87NodeCondition.WAITING && message.timestamp == state.timestamp) {
+		if (getCondition() == S87NodeCondition.WAITING && message.timestamp == state.timestamp) {
 			send(new S87RelinquishMessage(this, state.timestamp), message.sender);
 			state.votesReceived--;
 		}
@@ -52,17 +52,17 @@ public class S87Node extends S87AbstractNode {
 	
 	@Override
 	protected void waitForCS() {
-		state.condition = S87NodeCondition.WAITING;
+		setCondition(S87NodeCondition.WAITING);
 		requestVotes();
 	}
 	
 	private void enterCS() {
-		state.condition = S87NodeCondition.IN_CS;
+		setCondition(S87NodeCondition.IN_CS);
 		new S87Timer().startRelative(3, this);  // TODO: add random time
 	}
 	
 	public void leaveCS() {
-		state.condition = S87NodeCondition.NOT_IN_CS;
+		setCondition(S87NodeCondition.NOT_IN_CS);
 		releaseVotes();
 	}
 	
