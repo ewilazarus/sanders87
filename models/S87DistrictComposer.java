@@ -1,10 +1,10 @@
-package projects.sanders87.models.connectivity;
+package projects.sanders87.models;
 
 import sinalgo.models.ConnectivityModelHelper;
 import sinalgo.nodes.Node;
 import sinalgo.runtime.Runtime;
 
-public class S87Grid extends ConnectivityModelHelper {
+public class S87DistrictComposer extends ConnectivityModelHelper {
 		
 	@Override
 	protected boolean isConnected(Node from, Node to) {

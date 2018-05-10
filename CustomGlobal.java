@@ -64,11 +64,13 @@ import sinalgo.runtime.AbstractCustomGlobal;
  */
 public class CustomGlobal extends AbstractCustomGlobal{
 	
+	private int roundCount = 0;
+	
 	/* (non-Javadoc)
 	 * @see runtime.AbstractCustomGlobal#hasTerminated()
 	 */
 	public boolean hasTerminated() {
-		return false;
+		return roundCount == 2000;
 	}
 
 	/**
@@ -90,6 +92,11 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	@AbstractCustomGlobal.CustomButton(buttonText="GO", toolTipText="A sample button")
 	public void sampleButton() {
 		JOptionPane.showMessageDialog(null, "You Pressed the 'GO' button.");
+	}
+	
+	@Override
+	public void postRound() {
+		roundCount++;
 	}
 	
 }
