@@ -176,7 +176,7 @@ public class S87MetricCollector {
 		int numberOfNodes = numberOfCommunicatingNodes();
 		int messageCount = totalM(predicate);
 		
-		return messageCount / numberOfNodes;
+		return ((float) messageCount) / numberOfNodes;
 	}
 	
 	private static int totalC(CPredicate predicate) {
@@ -192,6 +192,6 @@ public class S87MetricCollector {
 		int numberOfNodes = numberOfCommunicatingNodes();
 		int conditionCount = totalC(predicate);
 		
-		return conditionCount / numberOfNodes;
+		return ((float) conditionCount) / numberOfNodes;
 	}
 }

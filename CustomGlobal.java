@@ -40,7 +40,6 @@ package projects.sanders87;
 import javax.swing.JOptionPane;
 
 import sinalgo.runtime.AbstractCustomGlobal;
-import sinalgo.tools.logging.Logging;
 
 /**
  * This class holds customized global state and methods for the framework. 
@@ -64,9 +63,6 @@ import sinalgo.tools.logging.Logging;
  * added to the GUI. 
  */
 public class CustomGlobal extends AbstractCustomGlobal{
-	
-	public int executionTimestamp = 0;
-	private Logging logger = Logging.getLogger("sanders87.log");
 	
 	/* (non-Javadoc)
 	 * @see runtime.AbstractCustomGlobal#hasTerminated()
@@ -96,14 +92,4 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		JOptionPane.showMessageDialog(null, "You Pressed the 'GO' button.");
 	}
 	
-	@Override
-	public void preRound() {
-		//logger.logln(LogL.TRACE_ROUNDS, "STARTING ROUND #" + executionTimestamp);
-	}
-
-	@Override
-	public void postRound() {
-		//logger.logln(LogL.TRACE_ROUNDS, "ENDING ROUND #" + executionTimestamp);
-		//executionTimestamp++;
-	}
 }

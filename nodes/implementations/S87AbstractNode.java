@@ -61,7 +61,7 @@ public abstract class S87AbstractNode extends Node {
 		}
 		
 		public int getUpdatedTimestamp() {
-			timestamp = executionTimestamp;
+			timestamp = currentTimestamp;
 			return timestamp;
 		}
 		
@@ -92,7 +92,7 @@ public abstract class S87AbstractNode extends Node {
 	}
 	
 	private Logging logger = Logging.getLogger("sanders87.log");
-	private int executionTimestamp = 0;
+	private int currentTimestamp = 0;
 	protected final PriorityQueue<S87TimestampedMessage> deferedQueue = new PriorityQueue<>();
 	public final S87NodeState state = new S87NodeState();
 	public final String label = String.format("%03d", this.ID);
@@ -129,7 +129,7 @@ public abstract class S87AbstractNode extends Node {
 	
 	@Override
 	public void postStep() {
-		executionTimestamp++;
+		currentTimestamp++;
 	}
 	
 	@Override
@@ -138,7 +138,7 @@ public abstract class S87AbstractNode extends Node {
 	
 	@Override
 	public void draw(Graphics g, PositionTransformation pt, boolean highlight) {
-		super.drawNodeAsDiskWithText(g, pt, highlight, label, 20, Color.WHITE);
+		super.drawNodeAsDiskWithText(g, pt, highlight, label, 30, Color.WHITE);
 	}
 	
 	@Override
@@ -187,8 +187,10 @@ public abstract class S87AbstractNode extends Node {
 		S87MetricCollector.countCondition(this);
 	}
 		
-	private double generateRandomValue() {
-		return distribution.nextDouble();
+	protected double generateRandomValue() {
+		double value = distribution.nextDouble();
+		logger.logln(Double.toString(value));
+		return value;
 	}
 
 }

@@ -229,7 +229,7 @@
 		<GeometricNodeCollection rMax="1000000"/>
 		<RandomMessageTransmission distribution="Uniform" min="1" max="10"/>
 		<CriticalSection>
-			<EnterThreshold value = "0.06" />
+			<EnterThreshold value = "0.02" />
 		</CriticalSection>
 	</Custom>
 </Document>

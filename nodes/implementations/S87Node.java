@@ -58,7 +58,7 @@ public class S87Node extends S87AbstractNode {
 	
 	private void enterCS() {
 		setCondition(S87NodeCondition.IN_CS);
-		new S87Timer().startRelative(3, this);  // TODO: add random time
+		new S87Timer().startRelative(generateRandomValue() * 3, this);
 	}
 	
 	public void leaveCS() {
