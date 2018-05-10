@@ -39,6 +39,7 @@ package projects.sanders87;
 
 import javax.swing.JOptionPane;
 
+import projects.sanders87.reports.S87ReportDumper;
 import sinalgo.runtime.AbstractCustomGlobal;
 
 /**
@@ -64,13 +65,14 @@ import sinalgo.runtime.AbstractCustomGlobal;
  */
 public class CustomGlobal extends AbstractCustomGlobal{
 	
+	private int totalRounds = 2000;
 	private int roundCount = 0;
 	
 	/* (non-Javadoc)
 	 * @see runtime.AbstractCustomGlobal#hasTerminated()
 	 */
 	public boolean hasTerminated() {
-		return roundCount == 2000;
+		return roundCount > totalRounds;
 	}
 
 	/**
@@ -96,6 +98,10 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	
 	@Override
 	public void postRound() {
+		if (roundCount > 0 && roundCount % (totalRounds / 10) == 0) {
+			S87ReportDumper.dumpMetrics(roundCount);
+		}
+				
 		roundCount++;
 	}
 	

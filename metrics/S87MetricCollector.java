@@ -1,24 +1,23 @@
 package projects.sanders87.metrics;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import projects.sanders87.models.nodes.S87AbstractNode;
 import projects.sanders87.models.messages.S87AbstractMessage;
 
 public class S87MetricCollector {
 	
-	public static void countMessage(S87AbstractMessage message) {
+	public synchronized static void countMessage(S87AbstractMessage message) {
 		doCountMessages(message, 1, false);
 	}
 	
-	public static void countMessages(S87AbstractMessage message, long number) {
+	public synchronized static void countMessages(S87AbstractMessage message, long number) {
 		doCountMessages(message, number, true);
 	}
 	
-	public static long numberOfCommunicatingNodes() {
-		return messageCounter.size();
-	}
+	
 	
 	public static long totalNumberOfMessages() {
 		return totalM((metric) -> metric.total);
@@ -27,64 +26,136 @@ public class S87MetricCollector {
 	public static double avgNumberOfMessagesPerNode() {
 		return avgM((metric) -> metric.total);
 	}
+	
+	
 			
 	public static long totalNumberOfUnicasts() {
 		return totalM((metric) -> metric.unicasts);
 	}
 	
+	public static double relativeNumberOfUnicasts() {
+		return ((double) totalNumberOfUnicasts()) / totalNumberOfMessages();
+	}
+	
 	public static double avgNumberOfUnicastsPerNode() {
 		return avgM((metric) -> metric.unicasts);
 	}
+		
+	public static double relativeNumberOfUnicastsPerNode() {
+		return avgNumberOfUnicastsPerNode() / avgNumberOfMessagesPerNode();
+	}
 	
+	
+		
 	public static long totalNumberOfBroadcasts() {
 		return totalM((metric) -> metric.broadcasts);
 	}
 	
-	public static double avgNumberOfBroadcasts() {
+	public static double relativeNumberOfBroadcasts() {
+		return ((double) totalNumberOfBroadcasts()) / totalNumberOfMessages();
+	}
+	
+	public static double avgNumberOfBroadcastsPerNode() {
 		return avgM((metric) -> metric.broadcasts);
 	}
-		
+	
+	public static double relativeNumberOfBroadcastsPerNode() {
+		return avgNumberOfBroadcastsPerNode() / avgNumberOfMessagesPerNode();
+	}
+	
+	
+			
 	public static long totalNumberOfInquireMessages() {
 		return totalM((metric) -> metric.inquire);
+	}
+	
+	public static double relativeNumberOfInquireMessages() {
+		return ((double) totalNumberOfInquireMessages()) / totalNumberOfMessages();
 	}
 	
 	public static double avgNumberOfInquireMessagesPerNode() {
 		return avgM((metric) -> metric.inquire);
 	}
 	
+	public static double relativeNumberOfInquireMessagesPerNode() {
+		return avgNumberOfInquireMessagesPerNode() / avgNumberOfMessagesPerNode();
+	}
+	
+	
+	
 	public static long totalNumberOfReleaseMessages() {
 		return totalM((metric) -> metric.release);
+	}
+	
+	public static double relativeNumberOfReleaseMessages() {
+		return ((double) totalNumberOfReleaseMessages()) / totalNumberOfMessages();
 	}
 	
 	public static double avgNumberOfReleaseMessagesPerNode() {
 		return avgM((metric) -> metric.release);
 	}
 	
+	public static double relativeNumberOfReleaseMessagesPerNode() {
+		return avgNumberOfReleaseMessagesPerNode() / avgNumberOfMessagesPerNode();
+	}
+	
+	
+	
 	public static long totalNumberOfRelinquishMessages() {
 		return totalM((metric) -> metric.relinquish);
+	}
+	
+	public static double relativeNumberOfRelinquishMessages() {
+		return ((double) totalNumberOfRelinquishMessages()) / totalNumberOfMessages();
 	}
 	
 	public static double avgNumberOfRelinquishMessagesPerNode() {
 		return avgM((metric) -> metric.relinquish);
 	}
 	
+	public static double relativeNumberOfRelinquishMessagesPerNode() {
+		return avgNumberOfRelinquishMessagesPerNode() / avgNumberOfMessagesPerNode();
+	}
+	
+	
+	
 	public static long totalNumberOfRequestMessages() {
 		return totalM((metric) -> metric.request);
+	}
+	
+	public static double relativeNumberOfRequestMessages() {
+		return ((double) totalNumberOfRequestMessages()) / totalNumberOfMessages();
 	}
 	
 	public static double avgNumberOfRequestMessagesPerNode() {
 		return avgM((metric) -> metric.request);
 	}
 	
+	public static double relativeNumberOfRequestMessagesPerNode() {
+		return avgNumberOfRequestMessagesPerNode() / avgNumberOfMessagesPerNode();
+	}
+	
+	
+	
 	public static long totalNumberOfYesMessages() {
 		return totalM((metric) -> metric.yes);
+	}
+	
+	public static double relativeNumberOfYesMessages() {
+		return ((double) totalNumberOfYesMessages()) / totalNumberOfMessages();
 	}
 	
 	public static double avgNumberOfYesMessagesPerNode() {
 		return avgM((metric) -> metric.yes);
 	}
 	
-	public static void countCondition(S87AbstractNode node) {
+	public static double relativeNumberOfYesMessagesPerNode() {
+		return avgNumberOfYesMessagesPerNode() / avgNumberOfMessagesPerNode();
+	}
+	
+	
+	
+	public synchronized static void countCondition(S87AbstractNode node) {
 		S87ConditionsPerNodeMetric cpn = new S87ConditionsPerNodeMetric();
 		if (conditionsCounter.containsKey(node.label)) {
 			cpn = conditionsCounter.get(node.label);
@@ -107,10 +178,6 @@ public class S87MetricCollector {
 		conditionsCounter.put(node.label, cpn);
 	}
 		
-	public static long numberOfConditionTransientNodes() {
-		return conditionsCounter.size();
-	}
-	
 	public static long totalNumberOfInCSNodes() {
 		return totalC((metric) -> metric.inCS);
 	}
@@ -148,8 +215,8 @@ public class S87MetricCollector {
 		return avgTimeToCS / conditionsCounter.size();
 	}
 			
-	private static final Map<String, S87MessagesPerNodeMetric> messageCounter = new HashMap<>();
-	private static final Map<String, S87ConditionsPerNodeMetric> conditionsCounter = new HashMap<>();
+	private static final ConcurrentMap<String, S87MessagesPerNodeMetric> messageCounter = new ConcurrentHashMap<>();
+	private static final ConcurrentMap<String, S87ConditionsPerNodeMetric> conditionsCounter = new ConcurrentHashMap<>();
 			
 	private interface MPredicate {
 		long extract(S87MessagesPerNodeMetric metric);
@@ -159,7 +226,7 @@ public class S87MetricCollector {
 		long extract(S87ConditionsPerNodeMetric metric);
 	}
 	
-	private static void doCountMessages(S87AbstractMessage message, long number, boolean isBroadcast) {
+	private static void doCountMessages(S87AbstractMessage message, final long number, boolean isBroadcast) {
 		S87MessagesPerNodeMetric mpn = new S87MessagesPerNodeMetric();
 		if (messageCounter.containsKey(message.sender.label)) {
 			mpn = messageCounter.get(message.sender.label);
@@ -194,7 +261,7 @@ public class S87MetricCollector {
 	}
 		
 	private static double avgM(MPredicate predicate) {
-		long numberOfNodes = numberOfCommunicatingNodes();
+		long numberOfNodes = messageCounter.size();
 		long messageCount = totalM(predicate);
 		
 		return ((double) messageCount) / numberOfNodes;
@@ -210,7 +277,7 @@ public class S87MetricCollector {
 	}
 	
 	private static double avgC(CPredicate predicate) {
-		long numberOfNodes = numberOfCommunicatingNodes();
+		long numberOfNodes = conditionsCounter.size();
 		long conditionCount = totalC(predicate);
 		
 		return ((double) conditionCount) / numberOfNodes;

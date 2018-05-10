@@ -112,7 +112,7 @@ public abstract class S87AbstractNode extends Node implements S87LogicalTimestam
 		
 	}
 		
-	private Logging logger = Logging.getLogger("sanders87.log");
+	private Logging logger = Logging.getLogger("sanders87.dbg.log");
 	protected int currentTimestamp = 0;
 	protected final PriorityQueue<S87AbstractMessage> deferedQueue = new PriorityQueue<>();
 	public final S87NodeState state = new S87NodeState();
@@ -198,7 +198,7 @@ public abstract class S87AbstractNode extends Node implements S87LogicalTimestam
 	
 	protected abstract void waitForCS();
 	
-	protected void send(S87AbstractMessage message, S87Node node) {
+	protected void send(S87AbstractMessage message, S87AbstractNode node) {
 		logger.logln(LogL.TRACE_MESSAGES, "SENDING " + message + " TO " + node);
 		S87MetricCollector.countMessage(message);
 		
