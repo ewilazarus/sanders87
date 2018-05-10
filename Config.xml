@@ -134,7 +134,7 @@
 		<DefaultMessageTransmissionModel value="RandomTime" />
 
 		<!--Default connectivity model used when none is specified-->
-		<DefaultConnectivityModel value="projects.sanders87.models.connectivity.S87Grid" />
+		<DefaultConnectivityModel value="projects.sanders87.models.S87DistrictComposer" />
 
 		<!--Default distribution model used when none is specified-->
 		<DefaultDistributionModel value="Grid2D" />
@@ -149,7 +149,7 @@
 		<DefaultReliabilityModel value="ReliableDelivery" />
 
 		<!--Default node implementation used when none is specified-->
-		<DefaultNodeImplementation value="projects.sanders87.nodes.implementations.S87Node" />
+		<DefaultNodeImplementation value="projects.sanders87.models.nodes.S87Node" />
 
 		<!--Show the models implemented by all projects in the drop down options. When set to false, only the models by the selected project and the default project are shown.-->
 		<showModelsOfAllProjects value="false" />
@@ -229,7 +229,7 @@
 		<GeometricNodeCollection rMax="1000000"/>
 		<RandomMessageTransmission distribution="Uniform" min="1" max="10"/>
 		<CriticalSection>
-			<EnterThreshold value = "0.02" />
+			<EnterThreshold value = "0.08" />
 		</CriticalSection>
 	</Custom>
 </Document>

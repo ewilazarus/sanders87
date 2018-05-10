@@ -1,12 +1,11 @@
-package projects.sanders87.nodes.implementations;
+package projects.sanders87.models.nodes;
 
-import projects.sanders87.nodes.messages.S87InquireMessage;
-import projects.sanders87.nodes.messages.S87ReleaseMessage;
-import projects.sanders87.nodes.messages.S87RelinquishMessage;
-import projects.sanders87.nodes.messages.S87RequestMessage;
-import projects.sanders87.nodes.messages.S87TimestampedMessage;
-import projects.sanders87.nodes.messages.S87YesMessage;
-import projects.sanders87.nodes.timers.S87Timer;
+import projects.sanders87.models.messages.S87AbstractMessage;
+import projects.sanders87.models.messages.S87InquireMessage;
+import projects.sanders87.models.messages.S87ReleaseMessage;
+import projects.sanders87.models.messages.S87RelinquishMessage;
+import projects.sanders87.models.messages.S87RequestMessage;
+import projects.sanders87.models.messages.S87YesMessage;
 
 public class S87Node extends S87AbstractNode {
 
@@ -33,8 +32,8 @@ public class S87Node extends S87AbstractNode {
 	protected void handle(S87RequestMessage message) {
 		if (state.hasVoted) {
 			deferedQueue.add(message);
-			if (state.shouldInquire(message)) {
-				send(new S87InquireMessage(this, state.candidateTimestamp), state.candidate);
+			if (message.compareTo(state.candidate) < 0 && !state.hasInquired) {
+				send(new S87InquireMessage(this, state.candidate.timestamp), state.candidate.node);
 				state.hasInquired = true;
 			}
 		} else {
@@ -58,7 +57,7 @@ public class S87Node extends S87AbstractNode {
 	
 	private void enterCS() {
 		setCondition(S87NodeCondition.IN_CS);
-		new S87Timer().startRelative(generateRandomValue() * 3, this);
+		simulateResourceConsumption();
 	}
 	
 	public void leaveCS() {
@@ -68,7 +67,7 @@ public class S87Node extends S87AbstractNode {
 	
 	private void vote() {
 		if (!deferedQueue.isEmpty()) {
-			S87TimestampedMessage message = deferedQueue.poll();
+			S87AbstractMessage message = deferedQueue.poll();
 			vote(message.sender, message.timestamp);
 		} else {
 			state.hasVoted = false;
@@ -76,8 +75,8 @@ public class S87Node extends S87AbstractNode {
 		}
 	}
 	
-	private void vote(S87Node node, int timestamp) {
-		send(new S87YesMessage(this), node);
+	private void vote(S87AbstractNode node, int timestamp) {
+		send(new S87YesMessage(this, currentTimestamp), node);
 		state.hasVoted = true;
 		state.hasInquired = false;
 		state.updateCandidate(node, timestamp);
@@ -89,6 +88,6 @@ public class S87Node extends S87AbstractNode {
 	
 	private void releaseVotes() {
 		state.votesReceived = 0;
-		broadcast(new S87ReleaseMessage(this));
+		broadcast(new S87ReleaseMessage(this, currentTimestamp));
 	}
 }
