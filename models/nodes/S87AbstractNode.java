@@ -224,9 +224,7 @@ public abstract class S87AbstractNode extends Node implements S87LogicalTimestam
 	}
 		
 	protected double generateRandomValue() {
-		double value = distribution.nextDouble();
-		logger.logln(Double.toString(value));
-		return value;
+		return distribution.nextDouble();
 	}
 	
 	protected void simulateResourceConsumption() {
