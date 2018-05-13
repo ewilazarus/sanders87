@@ -225,12 +225,12 @@
 
 	</Framework>
 	<Custom>
-		<Node defaultSize="25" />
+		<Node defaultSize="9" />
 		<GeometricNodeCollection rMax="1000000"/>
 		<RandomMessageTransmission distribution="Uniform" min="1" max="10"/>
 		<CriticalSection>
-			<EnterThreshold value = "0.08" />
+			<EnterThreshold value = "0.2" />
 		</CriticalSection>
-	</Custom>
+		</Custom>
 </Document>
 

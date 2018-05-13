@@ -15,7 +15,7 @@ public class S87DistrictIdentifier extends ConnectivityModelHelper {
 	{
 		public static final Map<Integer, List<Integer>> nodeDistrictsMap = new HashMap<>();
 		static {
-			/*
+			//*
 			nodeDistrictsMap.put(1, asList(1, 4));
 			nodeDistrictsMap.put(2, asList(2, 4));
 			nodeDistrictsMap.put(3, asList(3, 4));

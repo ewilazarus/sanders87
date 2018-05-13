@@ -116,7 +116,7 @@ public abstract class S87AbstractNode extends Node implements S87LogicalTimestam
 	protected int currentTimestamp = 0;
 	protected final PriorityQueue<S87AbstractMessage> deferedQueue = new PriorityQueue<>();
 	public final S87NodeState state = new S87NodeState();
-	public final String label = String.format("%03d", this.ID);
+	public final String label = String.format("%02d", this.ID);
 		
 	@Override
 	public void checkRequirements() throws WrongConfigurationException {}

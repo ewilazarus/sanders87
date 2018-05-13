@@ -6,7 +6,61 @@ import sinalgo.tools.logging.Logging;
 public class S87ReportDumper {
 	
 	private static Logging logger = Logging.getLogger("sanders87.log");
+	private static Logging loggerCsv = Logging.getLogger("sanders87.csv");
 		
+	public static void dumpCsvHeaders() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("round");
+		sb.append(",");
+		sb.append("total messages");
+		sb.append(",");
+		sb.append("avg messages p/ node");
+		sb.append(",");
+		sb.append("total unicasts");
+		sb.append(",");
+		sb.append("avg unicasts p/ node");
+		sb.append(",");
+		sb.append("total broadcasts");
+		sb.append(",");
+		sb.append("avg broadcasts p/ node");
+		sb.append(",");
+		sb.append("total inq messages");
+		sb.append(",");
+		sb.append("avg inq messages p/ node");
+		sb.append(",");
+		sb.append("total release messages");
+		sb.append(",");
+		sb.append("avg release messages p/ node");
+		sb.append(",");
+		sb.append("total relinquish messages");
+		sb.append(",");
+		sb.append("avg relinquish messages p/ node");
+		sb.append(",");
+		sb.append("total request messages");
+		sb.append(",");
+		sb.append("avg request messages p/ node");
+		sb.append(",");
+		sb.append("total yes messages");
+		sb.append(",");
+		sb.append("avg yes messages p/ node");
+		sb.append(",");
+		sb.append("number of times in CS");
+		sb.append(",");
+		sb.append("avg number of times in CS p/ node");
+		sb.append(",");
+		sb.append("number of times in NOT_IN_CS");
+		sb.append(",");
+		sb.append("avg number of times in NOT_IN_CS p/ node");
+		sb.append(",");
+		sb.append("number of times in WAITING");
+		sb.append(",");
+		sb.append("avg number of times in WAITING p/ node");
+		sb.append(",");
+		sb.append("avg milliseconds to transition from WAITING to IN_CS");
+		
+		loggerCsv.logln(sb.toString());
+	}
+	
 	public static void dumpMetrics(int currentRound) {
 		
 		logger.logln("# STATISTICS UNITL ROUND #" + currentRound);
@@ -42,6 +96,57 @@ public class S87ReportDumper {
 		logger.logln();
 		logger.logln();
 						
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(currentRound);
+		sb.append(",");
+		sb.append(S87MetricCollector.totalNumberOfMessages());
+		sb.append(",");
+		sb.append(S87MetricCollector.avgNumberOfMessagesPerNode());
+		sb.append(",");
+		sb.append(S87MetricCollector.totalNumberOfUnicasts());
+		sb.append(",");
+		sb.append(S87MetricCollector.avgNumberOfUnicastsPerNode());
+		sb.append(",");
+		sb.append(S87MetricCollector.totalNumberOfBroadcasts());
+		sb.append(",");
+		sb.append(S87MetricCollector.avgNumberOfBroadcastsPerNode());
+		sb.append(",");
+		sb.append(S87MetricCollector.totalNumberOfInquireMessages());
+		sb.append(",");
+		sb.append(S87MetricCollector.avgNumberOfInquireMessagesPerNode());
+		sb.append(",");
+		sb.append(S87MetricCollector.totalNumberOfReleaseMessages());
+		sb.append(",");
+		sb.append(S87MetricCollector.avgNumberOfReleaseMessagesPerNode());
+		sb.append(",");
+		sb.append(S87MetricCollector.totalNumberOfRelinquishMessages());
+		sb.append(",");
+		sb.append(S87MetricCollector.avgNumberOfRelinquishMessagesPerNode());
+		sb.append(",");
+		sb.append(S87MetricCollector.totalNumberOfRequestMessages());
+		sb.append(",");
+		sb.append(S87MetricCollector.avgNumberOfRequestMessagesPerNode());
+		sb.append(",");
+		sb.append(S87MetricCollector.totalNumberOfYesMessages());
+		sb.append(",");
+		sb.append(S87MetricCollector.avgNumberOfYesMessagesPerNode());
+		sb.append(",");
+		sb.append(S87MetricCollector.totalNumberOfInCSNodes());
+		sb.append(",");
+		sb.append(S87MetricCollector.avgNumberOfInCSNodes());
+		sb.append(",");
+		sb.append(S87MetricCollector.totalNumberOfNotInCSNodes());
+		sb.append(",");
+		sb.append(S87MetricCollector.avgNumberOfNotInCSNodes());
+		sb.append(",");
+		sb.append(S87MetricCollector.totalNumberOfWaitingNodes());
+		sb.append(",");
+		sb.append(S87MetricCollector.avgNumberOfWaitingNodes());
+		sb.append(",");
+		sb.append(S87MetricCollector.avgMillisecondsToCS());
+		
+		loggerCsv.logln(sb.toString());
 	}
 	
 }

@@ -97,6 +97,11 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	}
 	
 	@Override
+	public void preRun() {
+		S87ReportDumper.dumpCsvHeaders();
+	}
+	
+	@Override
 	public void postRound() {
 		if (roundCount > 0 && roundCount % (totalRounds / 10) == 0) {
 			S87ReportDumper.dumpMetrics(roundCount);
